@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>🔥 Calculator 🔥</title>
+    <meta charset="UTF-8" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@picocss/pico@1.*/css/pico.min.css"
+    />
+    <style>
+      body {
+        padding: 20px;
+      }
+      h1 {
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+
+    function Calculator() {
+        if (operator === '+') {
+            return firstValue + secondValue;
+        }
+        else if (operator === '-') {
+            return firstValue - secondValue;
+        }
+        else if (operator === '*') {
+            return firstValue * secondValue;
+        }
+        else if (operator === '/') {
+            return firstValue / secondValue;
+        }
+    }
+
+    function App() {
+      const [firstValue, setFirstValue] = React.useState(0);
+      const [secondValue, setSecondValue] = React.useState(0);
+      const [operator, setOperator] = React.useState('');
+      const [result, setResult] = React.useState(0);
+      
+      const onSelect = (e) => {
+        setOperator(e.target.value);
+        setResult(Calculator());
+      };
+
+      const onChange = (e) => {
+        const { name, value } = e.target;
+        if (name === 'firstValue') {
+          setFirstValue(value);
+          setResult(Calculator());
+        }
+        else if (name === 'secondValue') {
+          setSecondValue(value);
+          setResult(Calculator());
+        }
+      };
+
+      return (
+        <div className="container">
+          <h1>🔥 Calculator 🔥</h1>
+          <input name="firstValue" type="number" placeholder="first value" onChange={onChange}/>
+          <input name="secondValue" type="number" placeholder="second value" onChange={onChange}/>
+          <select value={operator} name="operator" id="operator" onChange={onSelect}>
+            <option name="add">+</option>
+            <option name="subtract">-</option>
+            <option name="multiply">*</option>
+            <option name="divide">/</option>
+          </select>
+            <h1>
+                {   
+                    operator === "+" ? `${firstValue} + ${secondValue} = ${result}`
+                    : operator === "-" ? `${firstValue} - ${secondValue} = ${result}`
+                    : operator === "*" ? `${firstValue} * ${secondValue} = ${result}`
+                    : `${firstValue} / ${secondValue} = ${result}`
+                }
+            </h1>
+        </div>
+      );
+    }
+    const root = document.getElementById('root');
+    ReactDOM.render(<App />, root);
+  </script>
+</html>
