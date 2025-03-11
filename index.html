@@ -24,61 +24,67 @@
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script type="text/babel">
 
-    function Calculator() {
-        if (operator === '+') {
-            return firstValue + secondValue;
-        }
-        else if (operator === '-') {
-            return firstValue - secondValue;
-        }
-        else if (operator === '*') {
-            return firstValue * secondValue;
-        }
-        else if (operator === '/') {
-            return firstValue / secondValue;
-        }
-    }
+    
 
     function App() {
       const [firstValue, setFirstValue] = React.useState(0);
       const [secondValue, setSecondValue] = React.useState(0);
-      const [operator, setOperator] = React.useState('');
+      const [operator, setOperator] = React.useState('+');
       const [result, setResult] = React.useState(0);
       
       const onSelect = (e) => {
         setOperator(e.target.value);
-        setResult(Calculator());
       };
 
       const onChange = (e) => {
         const { name, value } = e.target;
+        setResult(0);
         if (name === 'firstValue') {
           setFirstValue(value);
-          setResult(Calculator());
         }
         else if (name === 'secondValue') {
           setSecondValue(value);
-          setResult(Calculator());
         }
       };
+
+      const onClick = () => {
+        setResult(Calculator());
+      };
+
+      function Calculator() {
+        switch (operator) {
+          case '+':
+            return parseInt(firstValue) + parseInt(secondValue);
+          case '-':
+            return parseInt(firstValue) - parseInt(secondValue);
+          case '*':
+            return parseInt(firstValue) * parseInt(secondValue);
+          case '/':
+            return parseInt(firstValue) / parseInt(secondValue);
+          default:
+            return 0;
+        }
+      }
 
       return (
         <div className="container">
           <h1>🔥 Calculator 🔥</h1>
-          <input name="firstValue" type="number" placeholder="first value" onChange={onChange}/>
-          <input name="secondValue" type="number" placeholder="second value" onChange={onChange}/>
+          <input value={firstValue} name="firstValue" type="number" placeholder="first value" onChange={onChange}/>
+          <input value={secondValue} name="secondValue" type="number" placeholder="second value" onChange={onChange}/>
           <select value={operator} name="operator" id="operator" onChange={onSelect}>
             <option name="add">+</option>
             <option name="subtract">-</option>
             <option name="multiply">*</option>
             <option name="divide">/</option>
           </select>
+          <button onClick={onClick}>Calculate</button>
             <h1>
                 {   
                     operator === "+" ? `${firstValue} + ${secondValue} = ${result}`
                     : operator === "-" ? `${firstValue} - ${secondValue} = ${result}`
                     : operator === "*" ? `${firstValue} * ${secondValue} = ${result}`
-                    : `${firstValue} / ${secondValue} = ${result}`
+                    : operator === "/" ? `${firstValue} / ${secondValue} = ${result}`
+                    : `0`
                 }
             </h1>
         </div>
